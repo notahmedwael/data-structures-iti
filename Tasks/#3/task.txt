@@ -1,0 +1,9 @@
+With linked list ->
+
+Implement the following:
+Bubble
+Selection
+Insertion
+Linear search
+Binary search
+And make a report on their performance

@@ -1,0 +1,5 @@
+Lab
+-Deque (Double-Ended Queue)  using Circle
+- void insertFront(int data) : Adding an element to the front.
+- int deleteRear() : Removing an element from the back.
+-Queu With Linkedlist

@@ -1,213 +1,44 @@
 #include <iostream>
-using namespace std;
 
-template <typename T>
-class DoublyLinkedList {
-private:
-    struct Node {
-        T value;
-        Node* next;
-        Node* prev;
+#include "../../../Implementation/DLL/DLL.hpp"
 
-        Node(const T& val) : value(val), next(nullptr), prev(nullptr) {}
-    };
 
-    Node* head;
-    Node* tail;
-    int length;
+int main() {
+    DLL<int> dll;
 
-public:
-    DoublyLinkedList() : head(nullptr), tail(nullptr), length(0) {}
+    dll.push_back(10);
+    dll.push_back(20);
+    dll.push_front(5);
+    dll.traverse();
 
-    bool isEmpty() const {
-        return length == 0;
-    }
+    dll.insertAt(15, 2);
+    dll.traverse();
 
-    int size() const {
-        return length;
-    }
+    dll.insertBefore(15, 12);
+    dll.insertAfter(15, 18);
+    dll.traverse();
 
-    void insertAtBegin(const T& element) {
-        Node* newNode = new Node(element);
+    std::cout << "Index 2: " << dll[2] << std::endl;
+    dll[2] = 100;
+    dll.traverse();
 
-        if (isEmpty()) {
-            head = tail = newNode;
-        } else {
-            newNode->next = head;
-            head->prev = newNode;
-            head = newNode;
-        }
-        length++;
-    }
+    std::cout << "Front: " << dll.front() << std::endl;
+    std::cout << "Back: " << dll.back() << std::endl;
 
-    void insertAtEnd(const T& element) {
-        Node* newNode = new Node(element);
+    dll.removeElement(15);
+    dll.traverse();
 
-        if (isEmpty()) {
-            head = tail = newNode;
-        } else {
-            newNode->prev = tail;
-            tail->next = newNode;
-            tail = newNode;
-        }
-        length++;
-    }
+    dll.push_back(20);
+    dll.push_back(20);
+    dll.removeElementAll(20);
+    dll.traverse();
 
-    void insertAtPos(int pos, const T& element) {
-        if (pos < 0 || pos > length) {
-            cout << "Out of range." << endl;
-            return;
-        }
+    dll.removeAt(1);
+    dll.traverse();
 
-        if (pos == 0) {
-            insertAtBegin(element);
-            return;
-        }
+    dll.traverseReverse();
 
-        if (pos == length) {
-            insertAtEnd(element);
-            return;
-        }
+    std::cout << "Size: " << dll.getSize() << std::endl;
 
-        Node* current = head;
-        for (int i = 1; i < pos; i++) {
-            current = current->next;
-        }
-
-        Node* newNode = new Node(element);
-        newNode->next = current;
-        newNode->prev = current->prev;
-
-        current->prev->next = newNode;
-        current->next = newNode;
-
-        length++;
-    }
-
-    void removeFirst() {
-        if (isEmpty()) {
-            cout << "Empty list." << endl;
-            return;
-        }
-
-        Node* temp = head;
-
-        if (length == 1) {
-            head = tail = nullptr;
-        } else {
-            head = head->next;
-            head->prev = nullptr;
-        }
-
-        delete temp;
-        length--;
-    }
-
-    void removeLast() {
-        if (isEmpty()) {
-            cout << "Empty list." << endl;
-            return;
-        }
-
-        Node* temp = tail;
-
-        if (length == 1) {
-            head = tail = nullptr;
-        } else {
-            tail = tail->prev;
-            tail->next = nullptr;
-        }
-
-        delete temp;
-        length--;
-    }
-
-    void pop(){
-        removeLast();
-    }
-
-    void removeElement(const T& element) {
-        if (isEmpty()) {
-            cout << "List empty." << endl;
-            return;
-        }
-
-        Node* current = head;
-
-        while (current != nullptr && current->value != element) {
-            current = current->next;
-        }
-
-        if (current == nullptr) {
-            cout << "Element not found." << endl;
-            return;
-        }
-
-        if (current == head) {
-            removeFirst();
-        } else if (current == tail) {
-            removeLast();
-        } else {
-            current->prev->next = current->next;
-            current->next->prev = current->prev;
-            delete current;
-            length--;
-        }
-    }
-
-    void removePos(int pos) {
-        if (pos < 0 || pos >= length) {
-            cout << "Invalid position." << endl;
-            return;
-        }
-
-        if (pos == 0) {
-            removeFirst();
-            return;
-        }
-
-        if (pos == length - 1) {
-            removeLast();
-            return;
-        }
-
-        Node* current = head;
-        for (int i = 0; i < pos; i++) {
-            current = current->next;
-        }
-
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-
-        delete current;
-        length--;
-    }
-
-    void print() const {
-        Node* current = head;
-        while (current != nullptr) {
-            cout << current->value << " ";
-            current = current->next;
-        }
-        cout << endl;
-    }
-
-    void printReverse() const {
-        Node* current = tail;
-        while (current != nullptr) {
-            cout << current->value << " ";
-            current = current->prev;
-        }
-        cout << endl;
-    }
-
-    ~DoublyLinkedList() {
-        while (head != nullptr) {
-            Node* temp = head;
-            head = head->next;
-            delete temp;
-        }
-        tail = nullptr;
-        length = 0;
-    }
-};
+    return 0;
+}
